@@ -1,0 +1,56 @@
+﻿
+<!-- Views/Home/Index.cshtml -->
+@model TokenViewModel
+
+<h2>Mordex Token Management</h2>
+
+<form asp-action="CreateTokens" method="post">
+    <h3>Create Tokens</h3>
+    <div class="form-group">
+        <label asp-for="Amount">Amount:</label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Tokens</button>
+</form>
+
+<form asp-action="TransferTokens" method="post">
+    <h3>Transfer Tokens</h3>
+    <div class="form-group">
+        <label asp-for="Amount">Amount:</label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RecipientAddress">Recipient Address:</label>
+        <input asp-for="RecipientAddress" class="form-control" />
+        <span asp-validation-for="RecipientAddress" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Transfer Tokens</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                event.preventDefault();
+                var form = $(this);
+                if (form.valid()) {
+                    $.ajax({
+                        url: form.attr('action'),
+                        method: 'POST',
+                        data: form.serialize(),
+                        success: function (result) {
+                            alert('Operation successful');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error: ' + xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

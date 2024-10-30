@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Solana Dashboard";
+}
+<div class="header dashboard  mb-3">
+    <div class="h2">Solana Dashboard</div>
+    <div class="create-account">
+        <form method="post" asp-controller="Solana" asp-action="CreateAccount">
+            <button class="btn btn-primary" type="submit">Create Account</button>
+        </form>
+    </div>
+</div>
+@if (ViewBag.PublicKey != null)
+{
+    <div>
+        <p>Public Key: @ViewBag.PublicKey</p>
+        <p>Private Key: @ViewBag.PrivateKey</p>
+        <p>Mnemonic: @ViewBag.Mnemonic</p>
+    </div>
+}
+<div class="check-balance mb-3">
+    <form method="post" asp-controller="Solana" asp-action="CheckBalance">
+        <label for="publicKey">Public Key:</label>
+        <input type="text" style="width: 405px;" id="publicKey" name="publicKey" required>
+        <button class="btn btn-primary" type="submit">Check Balance</button>
+    </form>
+</div>
+@if (ViewBag.Balance != null)
+{
+    <div>
+        <p>Balance: @ViewBag.Balance lamports</p>
+    </div>
+}
+<div class="request-airdrop mb-3">
+    <form method="post" asp-controller="Solana" asp-action="RequestAirdrop">
+        <label for="publicKeyAirdrop">Public Key:</label>
+        <input type="text" style="width: 405px;" id="publicKeyAirdrop" name="publicKey" required>
+        <button class="btn btn-primary" type="submit">Request Airdrop</button>
+    </form>
+</div>
+
+@if (ViewBag.AirdropSuccess != null)
+{
+    <div>
+        <p>Airdrop successful!</p>
+    </div>
+}
+@if (ViewBag.Error != null)
+{
+    <div>
+        <p style="color:red;">Error: @ViewBag.Error</p>
+    </div>
+}
+<div class="transaction-history mb-3">
+    <form method="post" asp-controller="Solana" asp-action="GetTransactionHistory">
+        <label for="publicKeyHistory">Public Key:</label>
+        <input type="text" style="width: 405px;" id="publicKeyHistory" name="publicKey" value="@ViewBag.PublicKey" required>
+        <button class="btn btn-primary" type="submit">Get Transaction History</button>
+    </form>
+</div>
+@if (ViewBag.Transactions != null && ViewBag.Transactions.Count > 0)
+{
+    <div>
+        <h3>Transaction History</h3>
+        <ul>
+            @foreach (var tx in ViewBag.Transactions)
+            {
+                <li>@tx.Signature - @tx.ConfirmationStatus</li>
+            }
+        </ul>
+    </div>
+}
+<div class="clear-session">
+    <form method="post" asp-controller="Solana" asp-action="ClearSession">
+        <button class="btn btn-primary" type="submit">Clear Wallet Data</button>
+    </form>
+</div>
